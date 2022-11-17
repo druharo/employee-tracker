@@ -1,25 +1,60 @@
-const showBanner = require ('node-banner');
+const showBanner = require('node-banner');
 const mysql = require('mysql2');
 const cTable = require('console.table');
-const inquirer= require('inquirer');
+const inquirer = require('inquirer');
 
-
-(async ()=> {
-    await showBanner('Employee\nManager', 'All your Mysql belongs to Us')
+(async () => {
+    await showBanner("Employee\nManager", 'All your MySQL are Belong to US');
+    init();
 })();
 
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'employee_tracker'
+});
 
-inquirer
-  .prompt([
-    /* Pass your questions in here */
-  ])
-  .then((answers) => {
-    // Use user feedback for... whatever!!
-  })
-  .catch((error) => {
-    if (error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-    } else {
-      // Something else went wrong
-    }
-  });
+function init() {
+    inquirer
+        .prompt({
+            type: 'list',
+            name: 'todo',
+            message: 'What would you like to do?',
+            choices: [
+                {
+                    name: 'View All Departments',
+                    value: 'departments'
+                },
+                {
+                    name: 'Quit',
+                    value: 'quit'
+                }
+            ]
+        })
+        .then((answers) => {
+            if (answers.todo === "departments") {
+                show_departments();
+            } else if (answers.todo === "quit") {
+                process.exit();
+            }
+        })
+        .catch((error) => {
+            if (error.isTtyError) {
+                // Prompt couldn't be rendered in the current environment
+                console.log(error);
+            } else {
+                console.log("Something else went wrong");
+            }
+        });
+}
+
+function show_departments(createConnection) {
+    connection.query(
+        'SELECT * FROM `departments` ORDER BY name',
+        function (err, results, fields) {
+            console.table(results); // results contains rows returned by server
+            // console.log(fields); // fields contains extra meta data about results, if available
+            process.exit();
+        }
+    )
+}
