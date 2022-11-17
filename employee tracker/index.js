@@ -1,10 +1,11 @@
 const showBanner = require ('node-banner');
-const mySql = require('mysql2');
+const mysql = require('mysql2');
 const cTable = require('console.table');
-import inquirer from 'inquirer';
+const inquirer= require('inquirer');
+
 
 (async ()=> {
-    await showBanner('Employee/nManager, All your Mysql belongs to Us')
+    await showBanner('Employee\nManager', 'All your Mysql belongs to Us')
 })();
 
 
