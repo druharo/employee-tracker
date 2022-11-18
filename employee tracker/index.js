@@ -26,6 +26,10 @@ function init() {
                     value: 'departments'
                 },
                 {
+                    name: 'View All roles',
+                    value: 'roles'
+                },
+                {
                     name: 'Quit',
                     value: 'quit'
                 }
@@ -34,6 +38,8 @@ function init() {
         .then((answers) => {
             if (answers.todo === "departments") {
                 show_departments();
+            } else if (answers.todo === "roles") {
+                show_roles();
             } else if (answers.todo === "quit") {
                 process.exit();
             }
@@ -51,6 +57,16 @@ function init() {
 function show_departments(createConnection) {
     connection.query(
         'SELECT * FROM `departments` ORDER BY name',
+        function (err, results, fields) {
+            console.table(results); // results contains rows returned by server
+            // console.log(fields); // fields contains extra meta data about results, if available
+            process.exit();
+        }
+    )
+}
+function show_roles(createConnection) {
+    connection.query(
+        'SELECT * FROM `roles` ORDER BY title',
         function (err, results, fields) {
             console.table(results); // results contains rows returned by server
             // console.log(fields); // fields contains extra meta data about results, if available
