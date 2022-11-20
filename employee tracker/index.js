@@ -34,6 +34,18 @@ function init() {
                     value: 'employees'
                 },
                 {
+                    name: 'Add Department',
+                    value: 'addDepartment'
+                },
+                {
+                    name: 'Add Role',
+                    value: 'addRole'
+                },
+                {
+                    name: 'Add Employee',
+                    value: 'addEmployee'
+                },
+                {
                     name: 'Quit',
                     value: 'quit'
                 }
@@ -46,6 +58,12 @@ function init() {
                 show_roles();
             } else if (answers.todo === "employees") {
                 show_employees();  
+            } else if (answers.todo === "addDepartment") {
+                add_department();
+            } else if (answers.todo === "addRole") {
+                add_role();
+            } else if (answers.todo === "addEmployee") {
+                add_employee();
             } else if (answers.todo === "quit") {
                 process.exit();
             }
@@ -56,6 +74,7 @@ function init() {
                 console.log(error);
             } else {
                 console.log("Something else went wrong");
+                console.log(error)
             }
         });
 }
@@ -102,4 +121,130 @@ FROM employees
             process.exit();
         }
     )
+}
+function add_department(createConnection) {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'What is the name of the new department?',
+            }
+        ]).then((answers) => {
+            connection.query(
+                `INSERT INTO departments (name) VALUE ('${answers.name}')`,
+                function (err, results, fields) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    if (results) {
+                        console.log(`Added ${answers.name} to the departments`);
+                    }
+                    process.exit();
+                }
+            );
+        });
+}
+function add_role() {
+    connection.query(
+        `SELECT name, id AS value FROM departments`,
+        function (err, results, fields) {
+            if (err) {
+                console.log(err);
+                process.exit();
+            }
+            if (results) {
+                let departments = results;
+                inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            name: 'title',
+                            message: 'What is the name of the new role'
+                        },
+                        {
+                            type: 'input',
+                            name: 'salary',
+                            message: 'What is the salary for this role'
+                        },
+                        {
+                            type: 'list',
+                            name: 'department',
+                            message: 'Which department does the role belong to',
+                            choices: departments
+                        }
+                    ]).then((answers) => {
+                        connection.query(
+                            `INSERT INTO roles (title, salary, department_id) VALUE ('${answers.title}', '${answers.salary}', '${answers.department}')`,
+                            function (err, results, fields) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                if (results) {
+                                    console.log(`Added ${answers.title} to the roles`);
+                                }
+                                process.exit();
+                            }
+                        );
+                    });
+            }
+        }
+    );
+}
+function add_employee() {
+    // To do get roles from the database via query
+    const roles = [
+        { name: 'Sale Person', value: 1 },
+        { name: 'Lead Engineer', value: 2 },
+        { name: 'Software Engineer', value: 3 },
+        { name: 'Account Manager', value: 4 },
+        { name: 'Accountant', value: 5},
+        { name: 'Legal Team Lead', value: 6}
+        { name: 'Lawyer', value: 7}
+    
+    ];
+    const managers = [
+        { name: 'Sales', value: 1 },
+        { name: 'Legal', value: 2 },
+        { name: 'Finance', value: 3 },
+        { name: 'Engineering', value: 4 }
+    ];
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'first_name',
+                message: 'What is the employees first name?',
+            },
+            {
+                type: 'input',
+                name: 'last_name',
+                message: 'What is the employees last name?'
+            },
+            {
+                type: 'list',
+                name: 'roles_id',
+                message: 'What is the employees role?',
+                choices: roles,
+            },
+            {
+                type: 'list',
+                name: 'manager_id',
+                message: 'Who is the employees manager',
+                choices: managers,
+            }
+        ]).then((answers) => {
+            connection.query(
+                `INSERT INTO employees (first_name, last_name, roles_id, manager_id) VALUE ('${answers.first_name}','${answers.last_name}' '${answers.roles_id}', '${answers.manager_id}')`,
+                function (err, results, fields) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    if (results) {
+                        console.log(`Added ${answers.title} to the roles`);
+                    }
+                    process.exit();
+                }
+            );
+        });
 }
