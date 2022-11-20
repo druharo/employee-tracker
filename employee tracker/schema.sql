@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS departments;
 
 CREATE TABLE departments (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name varchar(30)
+    name varchar(30) UNIQUE
 );
 
 CREATE TABLE roles (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    title varchar(30), 
+    title varchar(30) UNIQUE, 
     salary decimal,
     department_id integer REFERENCES departments(id)
 );
