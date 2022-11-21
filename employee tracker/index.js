@@ -1,10 +1,11 @@
+// Installations required for the app
 const showBanner = require('node-banner');
 const mysql = require('mysql2');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 
 (async () => {
-    await showBanner("Employee\nManager", '-------------------------------');
+    await showBanner("Employee\nManager", '----------------------------------------');
     init();
 })();
 
@@ -13,7 +14,7 @@ const connection = mysql.createConnection({
     user: 'root',
     database: 'employee_tracker'
 });
-
+// prompts 
 const prompts = [
     {
         name: 'View All Departments',
@@ -48,7 +49,7 @@ const prompts = [
         value: 'quit'
     }
 ];
-
+// inquirer function
 function init() {
     inquirer
         .prompt({
@@ -78,10 +79,11 @@ function init() {
         })
         .catch((error) => {
             if (error.isTtyError) {
-                // Prompt couldn't be rendered in the current environment
+                // if Prompt couldn't be rendered in the current environment
                 console.log(error);
             } else {
                 console.log("Something else went wrong");
+                console.log(error);
             }
         });
 }
@@ -255,8 +257,18 @@ function add_employee() {
             );
         });
 }
-function update_employeeRole() {
+function update_employee() {
     // To do get roles from the database via query
+    const employees = [
+        { name: 'Ashely Rodriguez', value: 1 },
+        { name: 'Kunal Singh', value: 2 },
+        { name: 'Sarah Lourd', value: 3 },
+        { name: 'Tom Allen', value: 4 },
+        { name: 'Malia Brown', value: 5},
+        { name: 'Kevin Tupik', value: 6},
+        { name: 'Mike Chan', value: 7},
+        { name: 'John Doe', value: 8}
+    ];
     const roles = [
         { name: 'Sale Person', value: 1 },
         { name: 'Lead Engineer', value: 2 },
