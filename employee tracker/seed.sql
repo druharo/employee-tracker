@@ -1,4 +1,5 @@
 -- seed files
+-- mysql -u root employee_tracker < seed.sql
 
 INSERT INTO departments (name) VALUES ('Sales');
 INSERT INTO departments (name) VALUES ('Legal');
