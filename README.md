@@ -11,7 +11,7 @@ npm install --save inquirer@8.2.4.
 a) ![image info](./utils/employeeTracker.png)
 b) link to github pages (https://github.com/druharo/employee-tracker)
 c) Link to the live site (https://druharo.github.io/employee-tracker/)
-d) Link to walkthrough video (https://watch.screencastify.com/v/WINAQg7WCsD7PJsc681V)
+d) Link to walkthrough video (https://watch.screencastify.com/v/QkDPQPVOTU95QEVh2qIb)
 
 2. Key changes were made and pushed to github repository. initial  commit, generating prompts and questions, generateHtml.js, tests files and employee classes with prompts, updating the URLs (GitHub, Site and Video links) and creation of page in Github.
 
